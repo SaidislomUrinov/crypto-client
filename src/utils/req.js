@@ -9,7 +9,7 @@ export const getReq = (pref = '', params = {}) => {
     });
 }
 export const postReq = (pref = '', data = {}, params = {}) => {
-    return axios(`${API}/api${pref}`, data, {
+    return axios.post(`${API}/api${pref}`, data, {
         headers: {
             'x-auth-token': `Bearer ${localStorage?.access}`,
         },
