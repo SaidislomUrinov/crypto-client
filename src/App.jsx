@@ -12,6 +12,7 @@ import Navbar from "./components/navbar";
 import Mining from "./pages/mining";
 import Loading from "./components/loading";
 import { updateConfigs, updateCurrency } from "./contexts/cfg";
+import AnimationBG from "./components/animation";
 
 function App() {
   const { id } = useSelector(e => e.user);
@@ -22,18 +23,19 @@ function App() {
       const { ok, data } = res.data;
       if (ok) {
         dp(updateUser(data));
-        setLoaded(true);
       }
     }).catch(() => {
       errorMsg();
+    }).finally(() => {
+      setLoaded(true);
     });
-    getReq('/user/currencies').then(res=>{
+    getReq('/user/currencies').then(res => {
       const { ok, data } = res.data;
       if (ok) {
         dp(updateCurrency(data));
       }
     });
-    getReq('/user/configs').then(res=>{
+    getReq('/user/configs').then(res => {
       const { ok, data } = res.data;
       if (ok) {
         dp(updateConfigs(data));
@@ -58,6 +60,7 @@ function App() {
         </div>
       }
       <Toaster containerStyle={{ zIndex: '99999' }} toastOptions={{ style: { maxWidth: '600px' } }} />
+      <AnimationBG />
     </>
   );
 }

@@ -1,19 +1,22 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import format from "../utils/format";
 import { BsFan } from "react-icons/bs";
 import { useState } from "react";
-import { Button, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton, Option, Select, Typography } from "@material-tailwind/react";
+import { Button, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton, Option, Popover, PopoverContent, PopoverHandler, Select, Typography } from "@material-tailwind/react";
 import { BiSolidCoin, BiSolidUpArrowAlt } from "react-icons/bi";
-import { FaCopy } from "react-icons/fa";
+import { FaCheckCircle, FaCopy, FaRocket } from "react-icons/fa";
 import { postReq } from "../utils/req";
 import { errorMsg } from "../utils/alert";
 import Countdown from 'react-countdown';
+import { updateUser } from "../contexts/user";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
 function Mining() {
     const { balance, profit, dailyProfit, lvl, email } = useSelector(e => e.user);
     const { currencies, lvlPrice, profit: percent } = useSelector(e => e.cfg);
     const [claimDisabled, setClaimDisabled] = useState(false);
     const [openUpgrade, setOpenUpgrade] = useState(false);
     const [nextLvl, setNextLvl] = useState(lvl + 1);
+    const dp = useDispatch();
     function next() {
         setNextLvl(nextLvl + 1);
     };
@@ -22,7 +25,20 @@ function Mining() {
             setNextLvl(nextLvl - 1);
         }
     };
-    const claim = () => { };
+    const claim = async () => {
+        try {
+            if (Number(profit) < 0.1) throw new Error("Min. calim: $ 0.1");
+            setClaimDisabled(true);
+            const res = await postReq('/user/claim');
+            const { ok, data, msg } = res.data;
+            if (!ok) throw new Error(msg);
+            dp(updateUser(data));
+        } catch (error) {
+            errorMsg(error.message)
+        } finally {
+            setClaimDisabled(false);
+        }
+    };
     // 
     const upgradePrice = () => {
         return lvlPrice * Math.pow(2, nextLvl - 1)
@@ -107,15 +123,47 @@ function Mining() {
                     </div>
                     {/*  */}
                     <div className="flex items-start justify-center flex-col">
-                        <p className="text-blue-gray-700">Miner LVL: {lvl}</p>
-                        <p className="font-semibold text-[25px]">{format(profit, 6, 6)}</p>
-                        <p className="text-blue-gray-700 text-[14px]">Dailiy income: ${format(dailyProfit)}</p>
+                        <p className="text-blue-gray-600">Miner LVL: {lvl}</p>
+                        <p className="font-semibold text-[25px] text-blue-gray-800">$ {format(profit, 6, 6)}</p>
+                        <p className="text-blue-gray-600 text-[14px]">Dailiy income: <b className="text-green-500">$ {format(dailyProfit)}</b></p>
                     </div>
                 </div>
                 {/*  */}
-                <Button variant="gradient" className="w-[100px] sm:flex hidden" loading={claimDisabled} onClick={claim} color="indigo">
-                    Claim
-                </Button>
+                {profit > 0.1 ?
+                    <Button Button disabled={claimDisabled} variant="gradient" className="w-[100px] sm:flex hidden" loading={claimDisabled} onClick={claim} color="indigo">
+                        Claim
+                    </Button>
+                    :
+                    <Popover>
+                        <PopoverHandler>
+                            <Button variant="gradient" className="w-[100px] sm:flex hidden" color="indigo">
+                                Claim
+                            </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="border border-blue-gray-500">
+                            <p>Min. claim: $ 0.1</p>
+                        </PopoverContent>
+                    </Popover>
+                }
+            </div>
+            {/*  */}
+            <div className="flex items-center justify-center gap-1 w-[95%]">
+                {/*  */}
+                <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-4 rounded-2xl text-white shadow-md w-full relative overflow-hidden">
+                    <h3 className="text-lg font-bold z-[2] mb-2 text-start">🔥 Next Level Benefits 🔥</h3>
+                    <ul className="space-y-2 text-sm z-[2]">
+                        <li className="flex items-center gap-2">
+                            <FaCheckCircle /> <span className="font-medium">+${format((lvlPrice * Math.pow(2, lvl)) * percent)}/day income</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                            <FaRocket /> <span className="font-medium">Faster mining speed</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                            <FaMoneyBillTrendUp /> <span className="font-medium">Increased efficiency</span>
+                        </li>
+                    </ul>
+                </div>
+                {/*  */}
             </div>
             {/* actions */}
             <div className="flex items-center justify-center w-[95%] gap-1">
@@ -124,6 +172,7 @@ function Mining() {
                 {/*  */}
                 <Button onClick={claim} loading={claimDisabled} color="indigo" variant="gradient" className="sm:hidden w-1/2 from-purple-500 to-indigo-500" size="sm">Claim profit <BiSolidCoin className="text-[20px]" /></Button>
             </div>
+            {/*  */}
             {/*  */}
             <div className={`flex duration-200 fixed left-0 ${openUpgrade ? 'bottom-0' : 'bottom-[-100vh]'} items-center justify-end w-full flex-col h-[100vh] bg-[#0009] z-[6]`}>
                 <div className="flex items-center flex-col bg-white rounded-t-[20px] w-full max-w-[768px] p-[20px]">
@@ -208,7 +257,7 @@ function Mining() {
                     </Button>
                 </DialogFooter>
             </Dialog>
-        </div>
+        </div >
     );
 }
 
