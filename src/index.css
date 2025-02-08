@@ -12,7 +12,7 @@
 @tailwind utilities;
 
 body {
-    background-color: #f5f5ff;
+    background-color: #f0f4ff;
     min-height: 100vh;
     max-width: 768px;
     margin: 0 auto;
