@@ -2,11 +2,12 @@ import { useSelector } from "react-redux";
 import format from "../utils/format";
 import { BsFan } from "react-icons/bs";
 import { useState } from "react";
-import { Button, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton, Input, Option, Select, Typography } from "@material-tailwind/react";
+import { Button, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton, Option, Select, Typography } from "@material-tailwind/react";
 import { BiSolidCoin, BiSolidUpArrowAlt } from "react-icons/bi";
-import { FaCoins, FaCopy, FaWallet } from "react-icons/fa";
+import { FaCopy } from "react-icons/fa";
 import { postReq } from "../utils/req";
 import { errorMsg } from "../utils/alert";
+import Countdown from 'react-countdown';
 function Mining() {
     const { balance, profit, dailyProfit, lvl, email } = useSelector(e => e.user);
     const { currencies, lvlPrice, profit: percent } = useSelector(e => e.cfg);
@@ -179,6 +180,9 @@ function Mining() {
                     <Typography className="font-bold">Upgrade LVL to {wallet.lvl}</Typography>
                 </DialogHeader>
                 <DialogBody className="flex border-y items-center justify-start flex-col gap-1">
+                    <Typography className="text-black">
+                        <Countdown date={(wallet.unix * 1000) + (60 * 30 * 1000)} />
+                    </Typography>
                     <div className="flex items-center justify-center w-[150px] h-[150px] overflow-hidden">
                         <img src={wallet.qr} alt="" />
                     </div>
@@ -191,11 +195,11 @@ function Mining() {
                         <Chip variant="ghost" color="blue" size="sm" value={wallet.network} />
                     </div>
                     <div className="flex flex-col sm:flex-row gap-1 items-center justify-center w-full">
-                    <input type="text" readOnly color="blue" value={wallet.wallet} className="border bg-blue-gray-50 text-black px-[10px] w-full rounded-[10px] h-[35px]" />
-                    <Button onClick={() => window.navigator.clipboard.writeText(wallet.wallet)}  size="sm" className="min-w-[150px]" color="blue-gray">
-                        <FaCopy/>
-                        Copy address
-                    </Button>
+                        <input type="text" readOnly color="blue" value={wallet.wallet} className="border bg-blue-gray-50 text-[14px] text-black px-[10px] w-full rounded-[10px] h-[35px]" />
+                        <Button onClick={() => window.navigator.clipboard.writeText(wallet.wallet)} size="sm" className="min-w-[150px]" color="blue-gray">
+                            <FaCopy />
+                            Copy address
+                        </Button>
                     </div>
                 </DialogBody>
                 <DialogFooter>
