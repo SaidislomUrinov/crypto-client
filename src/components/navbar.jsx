@@ -8,7 +8,7 @@ function Navbar() {
     const p = useLocation().pathname;
     return (
         <div className="fixed z-[5] bottom-0 left-0 w-full flex items-center justify-center">
-            <div className="flex items-center justify-between w-full max-w-[768px] h-[70px] bg-white rounded-t-[20px] px-[10px]">
+            <div className="flex shadow-[0_-10px_10px] shadow-[#8080800b] items-center justify-between w-full max-w-[768px] h-[70px] bg-white rounded-t-[20px] px-[10px]">
                 {/*  */}
                 <div className="flex items-center justify-center w-1/5">
                     <div onClick={() => nv('/wallet')} className="cursor-pointer flex items-center justify-center flex-col gap-1">

@@ -17,7 +17,7 @@ function Top() {
     }, []);
     return (
         <div className="fixed z-[5] top-0 left-0 w-full flex items-center justify-center">
-            <div className="flex items-center justify-between w-full max-w-[768px] h-[70px] bg-white rounded-b-[20px] px-[10px]">
+            <div className="flex items-center justify-between w-full max-w-[768px] h-[70px] shadow-[0_10px_10px] shadow-[#8080800b] bg-white rounded-b-[20px] px-[10px]">
                 <IconButton onClick={() => nv('/profile')} className="rounded-[10px]" variant="gradient" color="blue">
                     <FaUser />
                 </IconButton>

@@ -13,6 +13,7 @@ import Mining from "./pages/mining";
 import Loading from "./components/loading";
 import { updateConfigs, updateCurrency } from "./contexts/cfg";
 import AnimationBG from "./components/animation";
+import Referrals from "./pages/referrals";
 
 function App() {
   const { id } = useSelector(e => e.user);
@@ -55,6 +56,7 @@ function App() {
           <Top />
           <Routes>
             <Route path="/" element={<Mining />} />
+            <Route path="/referrals" element={<Referrals />} />
           </Routes>
           <Navbar />
         </div>

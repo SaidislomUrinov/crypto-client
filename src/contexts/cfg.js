@@ -15,9 +15,6 @@ const cfg = createSlice({
         ref1Bonus: 0,
         ref2Bonus: 0,
         ref3Bonus: 0,
-        ref1CalimPercent: 0,
-        ref2CalimPercent: 0,
-        ref3CalimPercent: 0,
         lvlPrice: 0,
         profit: 0
     },
