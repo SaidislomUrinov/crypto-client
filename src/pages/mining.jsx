@@ -106,7 +106,7 @@ function Mining() {
                 <div className="absolute bottom-0 left-0 h-[100px] w-[100px] rounded-tr-full bg-[#00000038]"> </div>
             </div>
             {/* miner */}
-            <div className="flex items-center bg-white rounded-[22px] p-[10px] justify-between w-[95%]">
+            <div className="flex items-center shadow-sm bg-white rounded-[22px] p-[10px] justify-between w-[95%]">
                 {/* MINER */}
                 <div className="flex items-center justify-center gap-[10px]">
                     <div className="flex items-center w-[80px] h-[80px] justify-center bg-indigo-500 shadow-md rounded-[15px] relative">

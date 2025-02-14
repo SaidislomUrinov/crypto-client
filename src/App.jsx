@@ -14,6 +14,7 @@ import Loading from "./components/loading";
 import { updateConfigs, updateCurrency } from "./contexts/cfg";
 import AnimationBG from "./components/animation";
 import Referrals from "./pages/referrals";
+import Wallet from "./pages/wallet";
 
 function App() {
   const { id } = useSelector(e => e.user);
@@ -57,6 +58,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Mining />} />
             <Route path="/referrals" element={<Referrals />} />
+            <Route path="/wallet" element={<Wallet />} />
           </Routes>
           <Navbar />
         </div>
